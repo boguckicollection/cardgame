@@ -1,6 +1,6 @@
 # Bogucki Cards
 
-Bogucki Cards to połączenie gry przeglądarkowej oraz bota Discord, w której zbierasz karty inspirowane Pokemon TCG. Projekt zawiera backend w FastAPI, prosty frontend HTML/JS oraz rozbudowanego bota korzystającego z biblioteki `discord.py`.
+Bogucki Cards to połączenie gry przeglądarkowej oraz bota Discord, w której zbierasz karty inspirowane Pokemon TCG. Projekt zawiera backend w FastAPI, prosty frontend HTML/JS wykorzystujący wygląd Bootstrap oraz rozbudowanego bota korzystającego z biblioteki `discord.py`.
 
 ## Najważniejsze funkcje
 
