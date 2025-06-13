@@ -3,13 +3,14 @@ import time
 from pathlib import Path
 import discord
 
-BASE_DIR = Path(__file__).resolve().parent
-USERS_FILE = BASE_DIR / "users.json"
-SETS_FILE = BASE_DIR / "sets.json"
-PRICE_FILE = BASE_DIR / "price.json"
-DATA_FILE = BASE_DIR / "data.json"
-EVENTS_FILE = BASE_DIR / "events.json"
-CHANNELS_FILE = BASE_DIR / "channels.json"
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+USERS_FILE = DATA_DIR / "users.json"
+SETS_FILE = DATA_DIR / "sets.json"
+PRICE_FILE = DATA_DIR / "price.json"
+DATA_FILE = DATA_DIR / "data.json"
+EVENTS_FILE = DATA_DIR / "events.json"
+CHANNELS_FILE = DATA_DIR / "channels.json"
 
 # Default color for embeds used across the bot
 EMBED_COLOR = discord.Color.dark_teal()
