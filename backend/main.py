@@ -2,10 +2,13 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from pathlib import Path
+import json
+import os
+
 from database import get_session
 from models import User
-from sqlalchemy import select
-import os
 
 app = FastAPI(title="Cardgame API")
 
@@ -24,6 +27,22 @@ OAUTH_URL = (
     "https://discord.com/api/oauth2/authorize?response_type=code"
     f"&client_id={CLIENT_ID}&scope=identify&redirect_uri={REDIRECT_URI}"
 )
+
+DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+with open(DATA_DIR / "sets.json", "r") as f:
+    ALL_SETS = json.load(f)
+with open(DATA_DIR / "price.json", "r") as f:
+    BASE_PRICE = json.load(f)
+
+SHOP_ITEMS = [
+    {
+        "id": s["id"],
+        "name": s["name"],
+        "logo": s.get("images", {}).get("logo"),
+        "price": int(BASE_PRICE.get(s["id"], 0) * 1.5),
+    }
+    for s in ALL_SETS[:20]
+]
 
 @app.get("/login")
 async def login():
@@ -55,7 +74,7 @@ async def get_ranking():
 
 @app.get("/shop")
 async def get_shop():
-    return []
+    return SHOP_ITEMS
 
 @app.get("/giveaway")
 async def get_giveaway():
