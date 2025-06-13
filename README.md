@@ -48,7 +48,7 @@ oglądanie streamów.
    ```
 3. Uruchom bota:
    ```bash
-   python3 bot.py
+   python3 src/bot.py
    ```
 4. Backend FastAPI i frontend wymagają własnego środowiska. W katalogach
    `backend/` i `frontend/` znajdują się przykładowe konfiguracje projektu
@@ -80,11 +80,11 @@ adresów, aby pokazywać obrazki boosterów w sklepie.
 
 ## Pliki danych
 
-- `users.json` – lokalna baza kont użytkowników i ich kolekcji.
-- `sets.json` – lista setów pobierana z API; aktualizuje się automatycznie.
-- `price.json` – zapisane ceny boosterów w monetach.
-- `data.json` – statystyki zakupów i inne dane pomocnicze.
-- `channels.json` – przypisanie ID kanałów do funkcji bota (np. dropy, sklep, giveaway).
+- `data/users.json` – lokalna baza kont użytkowników i ich kolekcji.
+- `data/sets.json` – lista setów pobierana z API; aktualizuje się automatycznie.
+- `data/price.json` – zapisane ceny boosterów w monetach.
+- `data/data.json` – statystyki zakupów i inne dane pomocnicze.
+- `data/channels.json` – przypisanie ID kanałów do funkcji bota (np. dropy, sklep, giveaway).
 
 W kolejnych wersjach część danych z tych plików zostanie przeniesiona do
 bazy **PostgreSQL**, którą obsługuje aplikacja FastAPI.

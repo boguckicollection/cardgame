@@ -36,6 +36,7 @@ COINS_PER_USD = 3
 # Prosty cache kart pobranych z API {set_id: {rarity: [cards]}}
 CARD_CACHE = {}
 BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR.parent / "data"
 GRAPHIC_DIR = BASE_DIR / "graphic"
 CARD_CACHE_FILE = BASE_DIR / "card_cache.json"
 
@@ -476,8 +477,8 @@ load_card_cache()
 
 CHANNELS = load_channels()
 
-USERS_FILE = BASE_DIR / "users.json"
-SETS_FILE = BASE_DIR / "sets.json"
+USERS_FILE = DATA_DIR / "users.json"
+SETS_FILE = DATA_DIR / "sets.json"
 DISCORD_TOKEN = os.environ["BOT_TOKEN"]
 POKETCG_API_KEY = os.environ["POKETCG_API_KEY"]
 DROP_CHANNEL_ID = int(CHANNELS.get("drop", 0)) or 1374695570182246440
