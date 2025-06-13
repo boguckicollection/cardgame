@@ -97,3 +97,11 @@ niezbędne dane.
 Projekt ma charakter demonstracyjny i wymaga własnego tokenu Discord oraz
 klucza do Pokemon TCG API. Wykorzystuj na własną odpowiedzialność.
 
+
+## Backend i frontend
+
+W katalogu `backend/` znajduje się przykładowa aplikacja FastAPI z modelami
+SQLAlchemy oraz skryptem `load_data.py` do migracji plików JSON do bazy
+PostgreSQL. Frontend w `frontend/` zawiera proste szablony HTML oraz arkusz
+stylów. Strony korzystają z API udostępnionego przez backend i umożliwiają
+podstawowe akcje jak podgląd profilu, sklep, ranking czy aktualne giveawaye.
