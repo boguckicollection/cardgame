@@ -44,14 +44,14 @@ async function loadShop() {
   const items = await res.json();
   items.forEach(item => {
     const li = document.createElement('li');
-    li.className = 'product';
+    li.className = 'product flex items-center border p-4 my-2 bg-white rounded shadow';
     li.innerHTML = `
       <img src="${item.logo}" alt="${item.name}" class="logo">
-      <div class="info">
-        <h3>${item.name}</h3>
-        <p class="price">${item.price} BC</p>
-        <input type="number" min="1" value="1" class="qty form-control d-inline-block w-auto me-2">
-        <button class="add btn btn-success">Dodaj</button>
+      <div class="info flex-1">
+        <h3 class="text-lg font-semibold">${item.name}</h3>
+        <p class="price font-bold">${item.price} BC</p>
+        <input type="number" min="1" value="1" class="qty w-16 border rounded px-2 py-1 mr-2">
+        <button class="add bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">Dodaj</button>
       </div>
     `;
     list.appendChild(li);
