@@ -1,107 +1,60 @@
-# Poké Booster Bot
+# Bogucki Cards
 
-<img src="graphic/logo.png" alt="Logo" width="200"/>
+Bogucki Cards to połączenie gry przeglądarkowej oraz bota Discord, w której zbierasz karty inspirowane Pokemon TCG. Projekt zawiera backend w FastAPI, prosty frontend HTML/JS oraz rozbudowanego bota korzystającego z biblioteki `discord.py`.
 
+## Najważniejsze funkcje
 
-Polski bot Discord do kolekcjonowania kart Pokémon i otwierania wirtualnych boosterów.
-Korzysta z [Pokemon TCG API](https://pokemontcg.io/) i pozwala zbierać karty,
-wykonywać codzienne zadania oraz handlować przedmiotami w wbudowanym sklepie.
+- **Otwarte boostery** – kupuj i otwieraj paczki kart na stronie WWW.
+- **Ekonomia** – zarabiaj BoguckiCoiny za codzienne zadania i wymieniaj je na nowe karty.
+- **Osiągnięcia** – zbieraj odznaki za aktywność i kolekcjonowanie.
+- **Giveawaye** – administratorzy mogą uruchamiać losowania boosterów z poziomu bota.
+- **Integracja z YouTube** – opcjonalnie nagradza za oglądanie streamów twórcy.
 
-Projekt obecnie rozbudowuje się o pełny stack aplikacji sieciowej. Bot na Discordzie
-pozostaje miejscem, w którym zdobywa się monety i wykonuje szybkie akcje,
-natomiast kupowanie i otwieranie boosterów przenosimy na stronę WWW.
+## Wymagania i instalacja
 
-Backend powstaje w **FastAPI** z bazą **PostgreSQL**, a frontend w **Next.js**.
-Logowanie w serwisie działa w oparciu o OAuth2 Discord. Dodatkowo planowana
-jest integracja z YouTube API, dzięki czemu będzie można zbierać monety za
-oglądanie streamów.
-
-
-## Funkcje
-
-- **Kolekcja kart** – kupuj i otwieraj boostery z prawdziwych setów Pokémon.
-- **System ekonomii** – zdobywaj monety przez codzienne nagrody i osiągnięcia,
-  a następnie wydawaj je w sklepie.
-- **Sklep** – przeglądaj dostępne boostery i przedmioty.
-- **Otwieranie boosterów online** – odsłaniaj karty i zarządzaj kolekcją na stronie WWW.
-- **Logowanie przez Discord** – strona korzysta z OAuth2, więc używasz tych samych danych co na serwerze.
-- **Integracja z YouTube** – dodatkowe monety za oglądanie transmisji.
-- **Osiągnięcia i ranking tygodniowy** – zdobywaj odznaki za master sety,
-  30‑dniowy streak i najlepszy drop tygodnia.
-- **Giveaway** – administratorzy mogą tworzyć losowania boosterów.
-  Zwycięzcy otrzymują nagrody automatycznie i dostają powiadomienie w DM.
-- **Eventy** – czasowe bonusy jak podwójne monety lub zwiększona szansa na drop.
-
-## Instalacja
-
-1. Zainstaluj zależności:
+1. Zainstaluj Python 3.11 lub nowszy.
+2. Zainstaluj pakiety:
    ```bash
    pip install -r requirements.txt
    ```
-2. Utwórz plik `.env` i wpisz w nim wartości tokenu bota Discord oraz klucza
-   API:
+3. Utwórz plik `.env` i ustaw wymagane zmienne:
    ```ini
    BOT_TOKEN=twoj_token_bota
-   POKETCG_API_KEY=twoj_klucz_api
-   # Opcjonalnie ID emoji bc_coin na Twoim serwerze
-   BC_COIN_ID=1381617796282319010
+   POKETCG_API_KEY=klucz_do_api
+   DISCORD_CLIENT_ID=id_aplikacji
+   DISCORD_CLIENT_SECRET=sekret_aplikacji
+   DISCORD_REDIRECT_URI=http://localhost:8000/callback
    ```
-3. Uruchom bota:
-   ```bash
-   python3 src/bot.py
-   ```
-4. Backend FastAPI i frontend wymagają własnego środowiska. W katalogach
-   `backend/` i `frontend/` znajdują się przykładowe konfiguracje projektu
-   (uwaga: repozytorium obecnie zawiera tylko kod bota).
+4. (Opcjonalnie) skonfiguruj PostgreSQL i ustaw `DATABASE_URL` w `.env`.
 
-## Podstawowe komendy
+## Uruchamianie
 
-- `/start` – załóż konto i odbierz startową pulę monet.
-- `/saldo` – sprawdź aktualną ilość posiadanych monet.
-- `/daily` – codzienna nagroda pieniędzy (24 h cooldown). Co 7 dni serii otrzymasz bonus 200 BC.
-- `/sklep` – otwiera widok sklepu z boosterami i przedmiotami.
-- `/profil` – wyświetla Twój profil z kartami i boosterami.
-- `/profil_gracza` – pokaż uproszczony profil wskazanego gracza.
-- `/osiagniecia` – lista zdobytych osiągnięć.
-- `/ranking` – najlepsze dropy tygodnia.
-- `/help` – lista wszystkich komend bota.
-- `/otworz` – komenda dostępna w dotychczasowej wersji bota. Po migracji
-  otwieranie boosterów odbywa się już na stronie WWW.
-- `/giveaway` – stwórz losowanie boosterów (administrator).
-- `/nagroda` – przyznaj booster lub monety wybranemu graczowi (administrator).
+- **Bot Discord**
+  ```bash
+  python3 src/bot.py
+  ```
+- **Serwer FastAPI**
+  ```bash
+  uvicorn backend.main:app --reload
+  ```
+- **Testy**
+  ```bash
+  pytest -v
+  ```
 
-Poniżej przykład grafiki jednego z setów dostępnych w sklepie:
+## Jak stworzyć bota w Discord Developer Portal
 
-![Set logo](https://images.pokemontcg.io/sv10/logo.png)
+1. Wejdź na <https://discord.com/developers/applications> i kliknij „New Application”.
+2. W zakładce **Bot** dodaj bota i skopiuj jego token – trafi on do zmiennej `BOT_TOKEN`.
+3. W zakładce **OAuth2** dodaj URL przekierowania (np. `http://localhost:8000/callback`).
+4. Wygeneruj link z uprawnieniami bota i dodaj go na swój serwer Discord.
 
-Miniaturki boosterów są dostępne pod adresem `https://images.pokemontcg.io/<ID>/booster.png`,
-gdzie `<ID>` to identyfikator zestawu zapisany w `sets.json`. Bot korzysta z tych
-adresów, aby pokazywać obrazki boosterów w sklepie.
+## Struktura projektu
 
-## Pliki danych
+- `src/` – kod bota i skrypty pomocnicze.
+- `backend/` – aplikacja FastAPI z modelem baz danych.
+- `frontend/` – statyczne szablony HTML/CSS/JS.
+- `tests/` – podstawowe testy `pytest`.
+- `data/` – lokalne pliki z danymi graczy i konfiguracją.
 
-- `data/users.json` – lokalna baza kont użytkowników i ich kolekcji.
-- `data/sets.json` – lista setów pobierana z API; aktualizuje się automatycznie.
-- `data/price.json` – zapisane ceny boosterów w monetach.
-- `data/data.json` – statystyki zakupów i inne dane pomocnicze.
-- `data/channels.json` – przypisanie ID kanałów do funkcji bota (np. dropy, sklep, giveaway).
-
-W kolejnych wersjach część danych z tych plików zostanie przeniesiona do
-bazy **PostgreSQL**, którą obsługuje aplikacja FastAPI.
-
-Przed pierwszym uruchomieniem bota pliki te mogą być puste. Bot sam pobierze
-niezbędne dane.
-
-## Licencja
-
-Projekt ma charakter demonstracyjny i wymaga własnego tokenu Discord oraz
-klucza do Pokemon TCG API. Wykorzystuj na własną odpowiedzialność.
-
-
-## Backend i frontend
-
-W katalogu `backend/` znajduje się przykładowa aplikacja FastAPI z modelami
-SQLAlchemy oraz skryptem `load_data.py` do migracji plików JSON do bazy
-PostgreSQL. Frontend w `frontend/` zawiera proste szablony HTML oraz arkusz
-stylów. Strony korzystają z API udostępnionego przez backend i umożliwiają
-podstawowe akcje jak podgląd profilu, sklep, ranking czy aktualne giveawaye.
+Projekt jest w fazie rozwojowej i ma służyć jako przykład integracji bota Discord z prostą grą sieciową. Korzystaj na własną odpowiedzialność i baw się dobrze!
