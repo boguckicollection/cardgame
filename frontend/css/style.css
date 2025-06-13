@@ -24,3 +24,27 @@ button {
     padding: 10px 20px;
     font-size: 16px;
 }
+
+.product {
+    list-style: none;
+    margin: 10px 0;
+    padding: 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+.product img.logo {
+    width: 80px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.cart-item {
+    list-style: none;
+}
