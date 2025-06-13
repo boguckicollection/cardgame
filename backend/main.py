@@ -12,6 +12,12 @@ from models import User
 
 app = FastAPI(title="Cardgame API")
 
+
+@app.get("/")
+async def read_root():
+    """Health check endpoint for quick verification."""
+    return {"Hello": "CardCollectorGame Backend running!"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
