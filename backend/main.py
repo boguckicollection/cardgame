@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from pathlib import Path
@@ -9,6 +9,7 @@ import os
 
 from database import get_session
 from models import User
+import httpx
 
 app = FastAPI(title="Cardgame API")
 
@@ -55,11 +56,45 @@ async def login():
     return RedirectResponse(OAUTH_URL)
 
 @app.get("/callback")
-async def oauth_callback(request: Request):
+async def oauth_callback(request: Request, session: AsyncSession = Depends(get_session)):
     code = request.query_params.get("code")
     if not code:
         return {"error": "missing code"}
-    return {"code": code}
+
+    token_data = {
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": REDIRECT_URI,
+    }
+
+    async with httpx.AsyncClient() as client:
+        token_resp = await client.post(
+            "https://discord.com/api/oauth2/token",
+            data=token_data,
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
+        token_json = token_resp.json()
+        access_token = token_json.get("access_token")
+        if not access_token:
+            return {"error": "invalid token"}
+
+        user_resp = await client.get(
+            "https://discord.com/api/users/@me",
+            headers={"Authorization": f"Bearer {access_token}"},
+        )
+        user_data = user_resp.json()
+
+    result = await session.execute(select(User).where(User.discord_id == user_data["id"]))
+    user = result.scalar_one_or_none()
+    if not user:
+        user = User(discord_id=user_data["id"], username=user_data.get("username", ""))
+        session.add(user)
+        await session.commit()
+
+    html_content = f"<script>localStorage.setItem('userId', '{user.discord_id}'); window.location.href='/profile.html';</script>"
+    return HTMLResponse(content=html_content)
 
 @app.get("/profile/{discord_id}")
 async def get_profile(discord_id: str, session: AsyncSession = Depends(get_session)):
