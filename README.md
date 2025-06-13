@@ -37,6 +37,8 @@ Bogucki Cards to połączenie gry przeglądarkowej oraz bota Discord, w której 
   ```bash
   uvicorn backend.main:app --reload
   ```
+  Po uruchomieniu odwiedź [http://localhost:8000/](http://localhost:8000/) aby
+  zobaczyć komunikat testowy `{"Hello": "CardCollectorGame Backend running!"}`.
 - **Testy**
   ```bash
   pytest -v
